@@ -45,6 +45,8 @@ ReactorAI::AttackStart(Unit *p)
     if(!p)
         return;
 
+	i_creature.AddHostileLinkGroup(p);
+
     if(i_creature.Attack(p,true))
     {
         DEBUG_LOG("Tag unit GUID: %u (TypeId: %u) as a victim", p->GetGUIDLow(), p->GetTypeId());
@@ -120,6 +122,7 @@ ReactorAI::EnterEvadeMode()
     i_victimGuid = 0;
     i_creature.CombatStop();
     i_creature.SetLootRecipient(NULL);
+	i_creature.ResetLinkGroup();
 
     // Remove TargetedMovementGenerator from MotionMaster stack list, and add HomeMovementGenerator instead
     if( i_creature.GetMotionMaster()->GetCurrentMovementGeneratorType() == TARGETED_MOTION_TYPE )

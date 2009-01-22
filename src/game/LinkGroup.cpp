@@ -23,6 +23,7 @@
 LinkGroup::LinkGroup(uint32 linkgroupId, uint32 instanceId)
 {
 	m_linkgroupID = linkgroupId;
+	incombat = false;
 	LinkGroupmgr::AddTolist(linkgroupId, instanceId, this);
 }
 void LinkGroup::AddMember(Creature *cr, bool respawn)
@@ -49,7 +50,11 @@ void LinkGroup::AddHostile(Unit *u)
 	for(MemberList_witerator itr = m_memberSlots.begin(); itr != m_memberSlots.end(); ++itr)
 	{
 		if(itr->cr->isAlive() && u->isAlive())
+		{
+			if(!itr->cr->isInCombat())
+			    itr->cr->Attack(u,true);
 			itr->cr->AddThreat(u,0.0f);
+		}
 	}
 	incombat = true;
 }

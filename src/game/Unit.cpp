@@ -6973,9 +6973,6 @@ void Unit::CombatStop(bool cast)
 {
     if(cast& IsNonMeleeSpellCasted(false))
         InterruptNonMeleeSpells(false);
-
-	if(GetTypeId() != TYPEID_PLAYER)
-		((Creature*)this)->GetLinkGroup()->Reset();
     AttackStop();
     RemoveAllAttackers();
     if( GetTypeId()==TYPEID_PLAYER )
@@ -8399,8 +8396,6 @@ void Unit::Unmount()
 void Unit::SetInCombatWith(Unit* enemy)
 {
     Unit* eOwner = enemy->GetCharmerOrOwnerOrSelf();
-    if(GetTypeId() != TYPEID_PLAYER)
-		((Creature*)this)->GetLinkGroup()->AddHostile(enemy);
     if(eOwner->IsPvP())
     {
         SetInCombatState(true);
