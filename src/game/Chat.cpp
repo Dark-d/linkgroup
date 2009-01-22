@@ -411,7 +411,7 @@ ChatCommand * ChatHandler::getCommandTable()
         { "whisper",        SEC_MODERATOR,      false, &ChatHandler::HandleNpcWhisperCommand,          "", NULL },
         { "yell",           SEC_MODERATOR,      false, &ChatHandler::HandleNpcYellCommand,             "", NULL },
         { "tame",           SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcTameCommand,             "", NULL },
-		{ "addlink",		SEC_ADMINISTRATOR,  false, &ChatHandler::HandleAddLinkCommand,             "", NULL },
+        { "addlink",		SEC_ADMINISTRATOR,  false, &ChatHandler::HandleAddLinkCommand,             "", NULL },
 
         //{ TODO: fix or remove this commands
         { "name",           SEC_GAMEMASTER,     false, &ChatHandler::HandleNameCommand,                "", NULL },
