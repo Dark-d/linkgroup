@@ -28,6 +28,7 @@ extern DatabaseMysql  WorldDatabase;
 const char CreatureInfosrcfmt[]="iiiiiisssiiiiiiiiiiffiffiiiiiiiiiiiffiiiiiiiiiiiiiiiiiiisiilliiis";
 const char CreatureInfodstfmt[]="iiiiiisssiiiiiiiiiiffiffiiiiiiiiiiiffiiiiiiiiiiiiiiiiiiisiilliiii";
 const char CreatureDataAddonInfofmt[]="iiiiiiis";
+const char CreatureDataLinkGroupInfofmt[]="iii";
 const char CreatureModelfmt[]="iffbi";
 const char CreatureInfoAddonInfofmt[]="iiiiiiis";
 const char EquipmentInfofmt[]="iiiiiiiiii";
@@ -42,6 +43,7 @@ const char InstanceTemplatedstfmt[]="iiiiiiffffi";
 
 SQLStorage sCreatureStorage(CreatureInfosrcfmt, CreatureInfodstfmt, "entry","creature_template");
 SQLStorage sCreatureDataAddonStorage(CreatureDataAddonInfofmt,"guid","creature_addon");
+SQLStorage sCreatureDataLinkGroupStorage(CreatureDataLinkGroupInfofmt,"guid","creature_link");
 SQLStorage sCreatureModelStorage(CreatureModelfmt,"modelid","creature_model_info");
 SQLStorage sCreatureInfoAddonStorage(CreatureInfoAddonInfofmt,"entry","creature_template_addon");
 SQLStorage sEquipmentStorage(EquipmentInfofmt,"entry","creature_equip_template");

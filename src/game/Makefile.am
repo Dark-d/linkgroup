@@ -147,6 +147,8 @@ libmangosgame_a_SOURCES = \
     LootHandler.cpp \
     LootMgr.cpp \
     LootMgr.h \
+	LinkGroup.cpp \
+	LinkGroup.h \
     Mail.cpp \
     Mail.h \
     Map.cpp \

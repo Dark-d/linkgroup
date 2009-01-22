@@ -915,6 +915,14 @@ void ObjectMgr::LoadCreatureAddons()
             sLog.outErrorDb("Creature (GUID: %u) does not exist but has a record in `creature_addon`",addon->guidOrEntry);
     }
 }
+void ObjectMgr::LoadCreatureLinkGroup()
+{
+	sCreatureDataLinkGroupStorage.Load();
+
+    sLog.outString( ">> Loaded %u creature Link", sCreatureDataLinkGroupStorage.RecordCount );
+    sLog.outString();
+
+}
 
 EquipmentInfo const* ObjectMgr::GetEquipmentInfo(uint32 entry)
 {

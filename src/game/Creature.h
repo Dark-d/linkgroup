@@ -26,6 +26,7 @@
 #include "LootMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "Cell.h"
+#include "LinkGroup.h"
 
 #include <list>
 
@@ -282,6 +283,13 @@ struct CreatureDataAddon
     CreatureDataAddonAura const* auras;                     // loaded as char* "spell1 eff1 spell2 eff2 ... "
 };
 
+struct CreatureLinkGroup
+{	
+	uint32 guid;
+	uint32 linkgroup;
+	uint32 respawn;
+};
+
 struct CreatureModelInfo
 {
     uint32 modelid;
@@ -403,6 +411,18 @@ class MANGOS_DLL_SPEC Creature : public Unit
 
         bool Create (uint32 guidlow, Map *map, uint32 Entry, uint32 team, const CreatureData *data = NULL);
         bool LoadCreaturesAddon(bool reload = false);
+		void LoadLinkGroup();
+		void AddLink(uint32 linkid, uint32 respawn);
+		void ResetLinkGroup()
+		{
+			if(m_grouplink && m_grouplink->GetInCombat())
+				m_grouplink->Reset();
+		}
+		void AddHostileLinkGroup(Unit * u)
+		{
+			if(m_grouplink)
+				m_grouplink->AddHostile(u);
+		}
         void SelectLevel(const CreatureInfo *cinfo);
         void LoadEquipment(uint32 equip_entry, bool force=false);
 
@@ -492,6 +512,7 @@ class MANGOS_DLL_SPEC Creature : public Unit
 
         CreatureInfo const *GetCreatureInfo() const { return m_creatureInfo; }
         CreatureDataAddon const* GetCreatureAddon() const;
+		CreatureLinkGroup const* GetCreatureLinkGroup() const;
 
         std::string GetScriptName();
         uint32 GetScriptId();
@@ -551,6 +572,8 @@ class MANGOS_DLL_SPEC Creature : public Unit
         void CallAssistance();
         void SetNoCallAssistance(bool val) { m_AlreadyCallAssistance = val; }
         bool CanAssistTo(const Unit* u, const Unit* enemy) const;
+
+		LinkGroup * GetLinkGroup() {return m_grouplink;}
 
         MovementGeneratorType GetDefaultMovementType() const { return m_defaultMovementType; }
         void SetDefaultMovementType(MovementGeneratorType mgt) { m_defaultMovementType = mgt; }
@@ -646,6 +669,10 @@ class MANGOS_DLL_SPEC Creature : public Unit
         float CombatStartX;
         float CombatStartY;
         float CombatStartZ;
+
+		//LinkGroup variable
+		LinkGroup * m_grouplink;
+
     private:
         GridReference<Creature> m_gridRef;
         CreatureInfo const* m_creatureInfo;                 // in heroic mode can different from ObjMgr::GetCreatureTemplate(GetEntry())

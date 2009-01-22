@@ -6541,3 +6541,48 @@ bool ChatHandler::HandleModifyGenderCommand(const char *args)
         ChatHandler(player).PSendSysMessage(LANG_YOUR_GENDER_CHANGED, gender_full,GetName());
     return true;
 }
+
+bool ChatHandler::HandleAddLinkCommand(const char *args)
+{
+	if(!*args)
+        return false;
+	Unit* target = getSelectedUnit();
+	char* value1 = strtok((char*)args, " ");
+    char* value2 = strtok(NULL, " ");
+	if(!value2)
+	{
+	    value2 = "0";
+	}
+    if(!target)
+    {
+        SendSysMessage(LANG_SELECT_CREATURE);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+	uint32 respawn = (uint32)atoi(value1);
+    uint32 linkid = (uint32)atoi(value2);
+	uint32 lowguid = ((Creature*)target)->GetDBTableGUIDLow();
+	if(!linkid)
+	{
+    	QueryResult *result = WorldDatabase.PQuery( "SELECT MAX(linkid) FROM creature_link");
+		if( result )
+		{
+			linkid = (*result)[0].GetUInt32()+1;
+			delete result;
+		}
+		else
+			linkid = 1;
+	}
+	if(!linkid)
+	{
+		SendSysMessage(LANG_ERROR);
+        SetSentErrorMessage(true);
+        return false;
+	}
+    WorldDatabase.PExecuteLog("DELETE FROM creature_link WHERE guid = '%u'",lowguid);
+	WorldDatabase.PExecuteLog("INSERT IGNORE INTO creature_link (guid,linkid,respawn) VALUES ('%u','%u','%u')", lowguid, linkid, respawn);
+	((Creature*)target)->AddLink(linkid, respawn);
+	PSendSysMessage(LANG_LINK_ADD,lowguid,linkid,respawn);
+	return true;
+}

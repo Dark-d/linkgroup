@@ -42,6 +42,7 @@
 #include "GridNotifiers.h"
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
+#include "LinkGroup.h"
 
 // apply implementation of the singletons
 #include "Policies/SingletonImp.h"
@@ -120,7 +121,7 @@ m_deathTimer(0), m_respawnTime(0), m_respawnDelay(25), m_corpseDelay(60), m_resp
 m_gossipOptionLoaded(false), m_emoteState(0), m_isPet(false), m_isTotem(false),
 m_regenTimer(2000), m_defaultMovementType(IDLE_MOTION_TYPE), m_equipmentId(0),
 m_AlreadyCallAssistance(false), m_regenHealth(true), m_AI_locked(false), m_isDeadByDefault(false),
-m_meleeDamageSchoolMask(SPELL_SCHOOL_MASK_NORMAL),m_creatureInfo(NULL), m_DBTableGuid(0)
+m_meleeDamageSchoolMask(SPELL_SCHOOL_MASK_NORMAL),m_creatureInfo(NULL), m_DBTableGuid(0), m_grouplink(NULL)
 {
     m_valuesCount = UNIT_END;
 
@@ -138,6 +139,9 @@ Creature::~Creature()
     CleanupsBeforeDelete();
 
     m_vendorItemCounts.clear();
+    if(m_grouplink)
+    	m_grouplink->DelMember(this);
+    m_grouplink = NULL;
 
     delete i_AI;
     i_AI = NULL;
@@ -559,6 +563,7 @@ bool Creature::Create (uint32 guidlow, Map *map, uint32 Entry, uint32 team, cons
                 break;
         }
         LoadCreaturesAddon();
+		LoadLinkGroup();
     }
 
     return bResult;
@@ -1788,6 +1793,13 @@ bool Creature::IsOutOfThreatArea(Unit* pVictim) const
     return ( length > (ThreatRadius > AttackDist ? ThreatRadius : AttackDist));
 }
 
+CreatureLinkGroup const* Creature::GetCreatureLinkGroup() const
+{
+    if(CreatureLinkGroup const* linkgroup = ObjectMgr::GetCreatureLinkGroup(m_DBTableGuid))
+        return linkgroup;
+	return NULL;
+}
+
 CreatureDataAddon const* Creature::GetCreatureAddon() const
 {
     if (m_DBTableGuid)
@@ -1798,6 +1810,35 @@ CreatureDataAddon const* Creature::GetCreatureAddon() const
 
     // dependent from heroic mode entry
     return ObjectMgr::GetCreatureTemplateAddon(GetCreatureInfo()->Entry);
+}
+
+void Creature::LoadLinkGroup()
+{
+	CreatureLinkGroup const *clginfo = GetCreatureLinkGroup();
+    if(!clginfo)
+        return;
+	AddLink(clginfo->linkgroup,clginfo->respawn);
+
+
+}
+void Creature::AddLink(uint32 linkid, uint32 respawn)
+{
+	if(m_grouplink && m_grouplink->m_linkgroupID == linkid)
+		return;
+
+	if(m_grouplink)
+		m_grouplink->DelMember(this);
+
+	if(LinkGroupmgr::Find(linkid,GetInstanceId()))
+		m_grouplink = LinkGroupmgr::Find(linkid,GetInstanceId());
+	else
+	{
+		m_grouplink = new LinkGroup(linkid,GetInstanceId());
+	}	
+	if(respawn == 1)
+		m_grouplink->AddMember(this, true);
+	else
+		m_grouplink->AddMember(this, false);
 }
 
 //creature_addon table

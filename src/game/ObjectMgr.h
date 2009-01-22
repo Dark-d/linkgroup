@@ -45,6 +45,7 @@
 #include <limits>
 
 extern SQLStorage sCreatureStorage;
+extern SQLStorage sCreatureDataLinkGroupStorage;
 extern SQLStorage sCreatureDataAddonStorage;
 extern SQLStorage sCreatureInfoAddonStorage;
 extern SQLStorage sCreatureModelStorage;
@@ -340,6 +341,10 @@ class ObjectMgr
         {
             return sCreatureInfoAddonStorage.LookupEntry<CreatureDataAddon>(entry);
         }
+		static CreatureLinkGroup const *GetCreatureLinkGroup( uint32 lowguid )
+        {
+ 		    return sCreatureDataLinkGroupStorage.LookupEntry<CreatureLinkGroup>(lowguid);
+        }
 
         static ItemPrototype const* GetItemPrototype(uint32 id) { return sItemStorage.LookupEntry<ItemPrototype>(id); }
 
@@ -520,6 +525,7 @@ class ObjectMgr
         void LoadCreatures();
         void LoadCreatureRespawnTimes();
         void LoadCreatureAddons();
+		void LoadCreatureLinkGroup();
         void LoadCreatureModelInfo();
         void LoadEquipmentTemplates();
         void LoadGameObjectLocales();
