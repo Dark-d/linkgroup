@@ -17,7 +17,7 @@
  */
 
 
-#include "LinkGroup.h"
+#include "CreatureLinkGroup.h"
 
 
 LinkGroup::LinkGroup(uint32 linkgroupId, uint32 instanceId)
@@ -51,8 +51,6 @@ void LinkGroup::AddHostile(Unit *u)
 	{
 		if(itr->cr->isAlive() && u->isAlive())
 		{
-			if(!itr->cr->isInCombat())
-			    itr->cr->Attack(u,true);
 			itr->cr->AddThreat(u,0.0f);
 		}
 	}

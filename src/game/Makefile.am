@@ -87,6 +87,8 @@ libmangosgame_a_SOURCES = \
     CreatureAISelector.h \
     Creature.cpp \
     Creature.h \
+    CreatureLinkGroup.cpp \
+    CreatureLinkGroup.h \
     debugcmds.cpp \
     DestinationHolder.cpp \
     DestinationHolder.h \
@@ -147,8 +149,6 @@ libmangosgame_a_SOURCES = \
     LootHandler.cpp \
     LootMgr.cpp \
     LootMgr.h \
-	LinkGroup.cpp \
-	LinkGroup.h \
     Mail.cpp \
     Mail.h \
     Map.cpp \

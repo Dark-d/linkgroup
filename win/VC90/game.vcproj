@@ -873,6 +873,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\game\CreatureLinkGroup.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\CreatureLinkGroup.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\game\DestinationHolder.cpp"
 				>
 			</File>
@@ -970,14 +978,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\game\ItemPrototype.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\LinkGroup.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\game\LinkGroup.h"
 				>
 			</File>
 			<File

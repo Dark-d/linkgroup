@@ -26,7 +26,7 @@
 #include "LootMgr.h"
 #include "Database/DatabaseEnv.h"
 #include "Cell.h"
-#include "LinkGroup.h"
+#include "CreatureLinkGroup.h"
 
 #include <list>
 
